@@ -1,4 +1,62 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Birthday Planning App
+
+A Next.js application for planning birthday activities in Ericeira and Troia, Portugal.
+
+## Setup
+
+```bash
+# Install dependencies
+npm install
+
+# Create .env.local file and add your Google Maps API key
+cp .env.local.example .env.local
+# Edit .env.local with your actual API key
+
+# Run development server
+npm run dev
+```
+
+## Deployment
+
+This app can be easily deployed to Vercel:
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fyour-username%2Fbirthday-planner)
+
+### Environment Variables
+
+Add these environment variables in your Vercel project settings:
+- `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY`: Your Google Maps API key
+
+### Alternative Deployment Options
+
+1. **Docker**
+   - Dockerfile included for containerized deployment
+   - Can be deployed to any cloud provider supporting Docker (AWS, GCP, DigitalOcean)
+
+2. **Static Export**
+   - Run `npm run build` followed by `npm run export`
+   - Deploy the `out` directory to any static hosting (Netlify, GitHub Pages)
+
+## Development
+
+```bash
+# Run tests
+npm test
+
+# Run linter
+npm run lint
+
+# Build for production
+npm run build
+```
+
+## Tech Stack
+
+- Next.js 14
+- TypeScript
+- Tailwind CSS
+- Google Maps API
+- React
 
 ## Getting Started
 
