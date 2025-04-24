@@ -55,21 +55,11 @@ export async function POST(request: Request) {
 
 export async function GET() {
   try {
-    const votes = await prisma.vote.groupBy({
-      by: ['activityId'],
-      _count: true,
-    });
-
-    const voteCounts = Object.fromEntries(
-      votes.map(({ activityId, _count }) => [activityId, _count])
-    );
-
-    return NextResponse.json(voteCounts);
+    // Try to connect and run a simple query
+    await prisma.$queryRaw`SELECT 1`;
+    return NextResponse.json({ status: 'Database connected!' });
   } catch (error) {
-    console.error('Get votes error:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    console.error('Database connection error:', error);
+    return NextResponse.json({ error: 'Database connection failed' }, { status: 500 });
   }
 } 

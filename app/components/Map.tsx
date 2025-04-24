@@ -63,7 +63,7 @@ const Map = ({ location, activities, googleMapsApiKey, googleMapsMapId }: MapPro
         });
       };
     }
-  }, [map, activities, location]);
+  }, [map, activities, location, markers]);
 
   const onLoad = (map: google.maps.Map) => {
     setMap(map);
