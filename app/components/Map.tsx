@@ -4,6 +4,9 @@ import { GoogleMap, LoadScript } from '@react-google-maps/api';
 import type { Location, Activity } from '../types';
 import { useEffect, useState } from 'react';
 
+// Move libraries array outside component
+const GOOGLE_MAPS_LIBRARIES: ('marker' | 'places')[] = ['marker', 'places'];
+
 interface MapProps {
   location: Location;
   activities: Activity[];
@@ -72,7 +75,7 @@ const Map = ({ location, activities, googleMapsApiKey, googleMapsMapId }: MapPro
     <LoadScript 
       googleMapsApiKey={googleMapsApiKey}
       onError={(error) => console.error('Google Maps loading error:', error)}
-      libraries={['marker', 'places']}
+      libraries={GOOGLE_MAPS_LIBRARIES}
     >
       <GoogleMap
         mapContainerStyle={mapStyles}

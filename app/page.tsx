@@ -1,20 +1,43 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { LOCATIONS, ACTIVITIES, type Activity, type Location } from './types';
 import dynamic from 'next/dynamic';
 
 const DynamicMap = dynamic(() => import('./components/MapContainer'), { ssr: false });
 
-export default function Home() {
-  const [selectedLocation, setSelectedLocation] = useState<Location>(LOCATIONS[0]);
-  const [votes, setVotes] = useState<Record<string, boolean>>({});
+// In a real app, this would come from authentication
+const USER_ID = 'user-' + Math.random().toString(36).substr(2, 9);
 
-  const handleVote = (activityId: string) => {
-    setVotes(prev => ({
-      ...prev,
-      [activityId]: !prev[activityId]
-    }));
+export default function Home() {
+  const [selectedLocation] = useState<Location>(LOCATIONS[0]);
+  const [votes, setVotes] = useState<Record<string, number>>({});
+
+  useEffect(() => {
+    // Load initial votes
+    fetch('/api/votes')
+      .then(res => res.json())
+      .then(setVotes)
+      .catch(console.error);
+  }, []);
+
+  const handleVote = async (activityId: string) => {
+    try {
+      const res = await fetch('/api/votes', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ activityId, userId: USER_ID }),
+      });
+      const data = await res.json();
+      setVotes(prev => ({
+        ...prev,
+        [activityId]: data.votes
+      }));
+    } catch (error) {
+      console.error('Error voting:', error);
+    }
   };
 
   const filteredActivities = ACTIVITIES.filter(
@@ -22,11 +45,12 @@ export default function Home() {
   );
 
   const getActivitiesByDay = (date: Date, type?: Activity['type']) => {
-    return filteredActivities.filter(
-      activity => 
+    return filteredActivities
+      .filter(activity => 
         activity.day.toDateString() === date.toDateString() &&
         (type ? activity.type === type : true)
-    );
+      )
+      .sort((a, b) => (votes[b.id] || 0) - (votes[a.id] || 0)); // Sort by votes
   };
 
   return (
@@ -75,16 +99,19 @@ export default function Home() {
                           <div>
                             <h4 className="font-medium">{activity.name}</h4>
                             <p className="text-gray-600">{activity.description}</p>
+                            <p className="text-sm text-blue-600 mt-1">
+                              {votes[activity.id] || 0} votes
+                            </p>
                           </div>
                           <button
                             onClick={() => handleVote(activity.id)}
                             className={`px-4 py-2 rounded-lg transition-colors ${
-                              votes[activity.id]
+                              votes[activity.id] > 0
                                 ? 'bg-green-600 text-white'
                                 : 'bg-white border border-gray-300 hover:bg-gray-50'
                             }`}
                           >
-                            {votes[activity.id] ? 'Voted' : 'Vote'}
+                            {votes[activity.id] > 0 ? 'Voted' : 'Vote'}
                           </button>
                         </div>
                       ))}
@@ -99,16 +126,19 @@ export default function Home() {
                           <div>
                             <h4 className="font-medium">{activity.name}</h4>
                             <p className="text-gray-600">{activity.description}</p>
+                            <p className="text-sm text-blue-600 mt-1">
+                              {votes[activity.id] || 0} votes
+                            </p>
                           </div>
                           <button
                             onClick={() => handleVote(activity.id)}
                             className={`px-4 py-2 rounded-lg transition-colors ${
-                              votes[activity.id]
+                              votes[activity.id] > 0
                                 ? 'bg-green-600 text-white'
                                 : 'bg-white border border-gray-300 hover:bg-gray-50'
                             }`}
                           >
-                            {votes[activity.id] ? 'Voted' : 'Vote'}
+                            {votes[activity.id] > 0 ? 'Voted' : 'Vote'}
                           </button>
                         </div>
                       ))}
