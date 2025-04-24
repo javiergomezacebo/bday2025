@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { LOCATIONS, ACTIVITIES, type Activity, type Location } from './types';
 import dynamic from 'next/dynamic';
 
@@ -10,17 +10,12 @@ const DynamicMap = dynamic(() => import('./components/MapContainer'), { ssr: fal
 const USER_ID = 'user-' + Math.random().toString(36).substr(2, 9);
 
 export default function Home() {
-  const [selectedLocation, setSelectedLocation] = useState<Location>(LOCATIONS[0]);
+  const [selectedLocation] = useState<Location>(LOCATIONS[0]);
   const [votes, setVotes] = useState<Record<string, number>>({});
-  const [votingActivity, setVotingActivity] = useState<string | null>(null);
 
-  useEffect(() => {
-    // Load initial votes
-    fetch('/api/votes')
-      .then(res => res.json())
-      .then(setVotes)
-      .catch(console.error);
-  }, []);
+  const filteredActivities = ACTIVITIES.filter(
+    activity => activity.location.id === selectedLocation.id
+  );
 
   const handleVote = async (activityId: string) => {
     try {
@@ -40,10 +35,6 @@ export default function Home() {
       console.error('Error voting:', error);
     }
   };
-
-  const filteredActivities = ACTIVITIES.filter(
-    activity => activity.location.id === selectedLocation.id
-  );
 
   const getActivitiesByDay = (date: Date, type?: Activity['type']) => {
     return filteredActivities
