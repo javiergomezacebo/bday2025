@@ -82,9 +82,8 @@ const Map = ({ location, activities, googleMapsApiKey, googleMapsMapId }: MapPro
         zoom={13}
         center={defaultCenter}
         onLoad={onLoad}
-        mapId={googleMapsMapId}
         options={{
-          mapId: googleMapsMapId,
+          mapId: googleMapsMapId
         }}
       >
       </GoogleMap>
