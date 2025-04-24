@@ -75,6 +75,7 @@ const Map = ({ location, activities }: MapProps) => {
         zoom={13}
         center={defaultCenter}
         onLoad={onLoad}
+        mapId={process.env.NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID || ''}
       >
       </GoogleMap>
     </LoadScript>
