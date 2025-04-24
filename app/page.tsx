@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { LOCATIONS, ACTIVITIES, type Activity, type Location } from './types';
 import dynamic from 'next/dynamic';
 
-const MapComponent = dynamic(() => import('./components/Map'), { ssr: false });
+const DynamicMap = dynamic(() => import('./components/MapContainer'), { ssr: false });
 
 export default function Home() {
   const [selectedLocation, setSelectedLocation] = useState<Location>(LOCATIONS[0]);
@@ -55,7 +55,7 @@ export default function Home() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="bg-white rounded-xl shadow-lg p-6">
             <div className="h-[400px] w-full">
-              <MapComponent location={selectedLocation} activities={filteredActivities} />
+              <DynamicMap location={selectedLocation} activities={filteredActivities} />
             </div>
           </div>
 

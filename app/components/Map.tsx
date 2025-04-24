@@ -7,6 +7,8 @@ import { useEffect, useState } from 'react';
 interface MapProps {
   location: Location;
   activities: Activity[];
+  googleMapsApiKey: string;
+  googleMapsMapId: string;
 }
 
 declare global {
@@ -15,7 +17,7 @@ declare global {
   }
 }
 
-const Map = ({ location, activities }: MapProps) => {
+const Map = ({ location, activities, googleMapsApiKey, googleMapsMapId }: MapProps) => {
   const [map, setMap] = useState<google.maps.Map | null>(null);
   const [markers, setMarkers] = useState<google.maps.marker.AdvancedMarkerElement[]>([]);
 
@@ -66,7 +68,7 @@ const Map = ({ location, activities }: MapProps) => {
 
   return (
     <LoadScript 
-      googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ''}
+      googleMapsApiKey={googleMapsApiKey}
       onError={(error) => console.error('Google Maps loading error:', error)}
       libraries={['marker']}
     >
@@ -75,7 +77,7 @@ const Map = ({ location, activities }: MapProps) => {
         zoom={13}
         center={defaultCenter}
         onLoad={onLoad}
-        mapId={process.env.NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID || ''}
+        mapId={googleMapsMapId}
       >
       </GoogleMap>
     </LoadScript>
