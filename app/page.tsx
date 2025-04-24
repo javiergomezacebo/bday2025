@@ -42,7 +42,7 @@ export default function Home() {
         activity.day.toDateString() === date.toDateString() &&
         (type ? activity.type === type : true)
       )
-      .sort((a, b) => (votes[b.id] || 0) - (votes[a.id] || 0)); // Sort by votes
+      .sort((a, b) => (votes[b.id] || 0) - (votes[a.id] || 0));
   };
 
   return (
@@ -51,22 +51,6 @@ export default function Home() {
         <h1 className="text-4xl font-bold mb-8 text-center">
           Birthday Planning - May 2nd, 2025
         </h1>
-        
-        <div className="flex gap-4 mb-8">
-          {LOCATIONS.map(location => (
-            <button
-              key={location.id}
-              onClick={() => setSelectedLocation(location)}
-              className={`px-6 py-3 rounded-lg font-medium transition-colors ${
-                selectedLocation.id === location.id
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-white text-gray-700 hover:bg-gray-100'
-              }`}
-            >
-              {location.name}
-            </button>
-          ))}
-        </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="bg-white rounded-xl shadow-lg p-6">
