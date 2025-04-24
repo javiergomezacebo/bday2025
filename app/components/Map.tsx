@@ -66,11 +66,13 @@ const Map = ({ location, activities, googleMapsApiKey, googleMapsMapId }: MapPro
     setMap(map);
   };
 
+  console.log('Map Component MapID:', googleMapsMapId);
+
   return (
     <LoadScript 
       googleMapsApiKey={googleMapsApiKey}
       onError={(error) => console.error('Google Maps loading error:', error)}
-      libraries={['marker']}
+      libraries={['marker', 'places']}
     >
       <GoogleMap
         mapContainerStyle={mapStyles}
@@ -78,6 +80,10 @@ const Map = ({ location, activities, googleMapsApiKey, googleMapsMapId }: MapPro
         center={defaultCenter}
         onLoad={onLoad}
         mapId={googleMapsMapId}
+        options={{
+          mapId: googleMapsMapId,
+          useAdvancedMarkers: true
+        }}
       >
       </GoogleMap>
     </LoadScript>
