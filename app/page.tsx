@@ -10,8 +10,9 @@ const DynamicMap = dynamic(() => import('./components/MapContainer'), { ssr: fal
 const USER_ID = 'user-' + Math.random().toString(36).substr(2, 9);
 
 export default function Home() {
-  const [selectedLocation] = useState<Location>(LOCATIONS[0]);
+  const [selectedLocation, setSelectedLocation] = useState<Location>(LOCATIONS[0]);
   const [votes, setVotes] = useState<Record<string, number>>({});
+  const [votingActivity, setVotingActivity] = useState<string | null>(null);
 
   useEffect(() => {
     // Load initial votes
