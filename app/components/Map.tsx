@@ -85,7 +85,6 @@ const Map = ({ location, activities, googleMapsApiKey, googleMapsMapId }: MapPro
         mapId={googleMapsMapId}
         options={{
           mapId: googleMapsMapId,
-          useAdvancedMarkers: true
         }}
       >
       </GoogleMap>
