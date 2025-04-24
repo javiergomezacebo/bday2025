@@ -1,9 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
-// This would be replaced with a real database
-let votes: Record<string, Set<string>> = {};
-
 export async function POST(request: Request) {
   try {
     const { activityId, userId } = await request.json();
